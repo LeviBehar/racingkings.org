@@ -12,14 +12,34 @@
 
 #include <stdio.h>
 
-int game_state() {
+#include "types.h"
+
+#define RANK_8 0xff00000000000000ULL
+
+int game_state(Board *board) {
+    if ((board->ByColorBB[BLACK] & board->ByTypeBB[KING]) & RANK_8) {
+        switch (board->WhiteR8) {
+            case (1):
+                return DRAW;
+            case (0):
+                return BLACK_WIN;
+        }
+    } else if ((board->ByColorBB[WHITE] & board->ByTypeBB[KING]) & RANK_8) {
+        switch (board->Side) {
+            case (WHITE):
+                return WHITE_WIN;
+            case (BLACK):
+                return NONE;
+        }
+    }
+
+    return NONE;
+}
+
+void validate_move(void) {
 
 }
 
-void validate_move() {
-
-}
-
-void apply_move() {
+void apply_move(void) {
 
 }

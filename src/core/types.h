@@ -19,6 +19,10 @@ enum {
     WHITE, BLACK, COLOR_NB = 2
 };
 
+enum States {
+    NONE, DRAW, WHITE_WIN, BLACK_WIN = 3
+};
+
 enum PieceType {
     PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING, PIECE_NB = 6
 };
@@ -31,7 +35,10 @@ typedef uint8_t Piece;
 typedef struct {
     Bitboard ByColorBB[COLOR_NB];
     Bitboard ByTypeBB[PIECE_NB];
+
     Color Side;
+
+    uint8_t WhiteR8;
 } Board;
 
 #endif
