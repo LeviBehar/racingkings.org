@@ -1,0 +1,8 @@
+# Main C executable file
+main
+
+# Object files
+*.o
+
+# Default executable name files
+*.out
