@@ -1,7 +1,4 @@
-// Copyright (c) 2026 Levi Behar.
-// Project: Racing King Chess Variant Platform RacingKings.org 
-// This project is Open Source under the MIT License.
-// Note: Attack tables in this file were precomputed for performance.
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 #ifndef TYPES_H
 #define TYPES_H
@@ -9,7 +6,7 @@
 #include <stdint.h>
 
 enum {
-    WHITE, BLACK, COLOR_NB = 2
+    WHITE, BLACK, ALL_COLORS = 2
 };
 
 enum States {
@@ -17,7 +14,7 @@ enum States {
 };
 
 enum PieceType {
-    KNIGHT, BISHOP, ROOK, QUEEN, KING, PIECE_NB = 5
+    KNIGHT, BISHOP, ROOK, QUEEN, KING, EMPTY = 5
 };
 
 typedef uint64_t Bitboard;
@@ -26,8 +23,10 @@ typedef uint8_t Square;
 typedef uint8_t Piece;
 
 typedef struct {
-    Bitboard ByColorBB[COLOR_NB];
-    Bitboard ByTypeBB[PIECE_NB];
+    Bitboard Pieces[ALL_COLORS][5];
+    Bitboard Occupancy[3];
+
+    Piece Grid[64];
 
     Color Side;
 

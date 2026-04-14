@@ -1,45 +1,47 @@
-// Copyright (C) 2026 Levi Behar
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-// See the GNU General Public License for more details.
-// You should have received a copy of the GNU General Public License
-// along with this program. If not, see <https://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <stdio.h>
 
 #include "types.h"
+#include "attack_tables.h"
 
 #define RANK_8 0xff00000000000000ULL
 
-int game_state(Board *board) {
-    if ((board->ByColorBB[BLACK] & board->ByTypeBB[KING]) & RANK_8) {
-        switch (board->WhiteR8) {
-            case (1):
-                return DRAW;
-            case (0):
-                return BLACK_WIN;
-        }
-    } else if ((board->ByColorBB[WHITE] & board->ByTypeBB[KING]) & RANK_8) {
-        switch (board->Side) {
-            case (WHITE):
-                return WHITE_WIN;
-            case (BLACK):
-                return NONE;
-        }
-    }
+int six_bits = 0x3f;
 
+int game_state(Board *board) {
+    // TODO: Need to check If it's stalemate that also covers reverse stalemate's
+    if (board->Pieces[BLACK][KING] & RANK_8) {
+        return (board->WhiteR8) ? DRAW : BLACK_WIN;
+    } else if (board->Pieces[WHITE][KING] & RANK_8) {
+        return (board->Side == WHITE) ? NONE : WHITE_WIN;
+    }
+    if (board->Pieces[!board->Side][KING] & KingAttack) 
     return NONE;
 }
 
 void validate_move(void) {
-
+    
 }
 
-void apply_move(void) {
+void make_move(Board *board, int move) {
+    int src = move & six_bits;
+    int dest = (move >> 6) & six_bits;
 
+    Piece moving_piece = board->Grid[src];
+    Bitboard dest_mask = (1ULL << dest);
+    Bitboard src_mask = (1ULL << src);
+    Bitboard move_mask = (1ULL << src) | (1ULL << dest);
+
+    if (board->Occupancy[!board->Side] & dest_mask) {
+        Piece captured_piece = board->Grid[dest];
+        board->Pieces[!board->Side][captured_piece] ^= dest_mask;
+    }
+    if (!board->Occupancy[ALL_COLORS] & dest_mask) {
+        board->Occupancy[board->Side] ^= src_mask;
+    }
+    board->Occupancy[!board->Side] ^= dest_mask;
+    board->Occupancy[ALL_COLORS] ^= move_mask;
+    board->Grid[dest] = moving_piece;
+    board->Grid[src] = EMPTY;
 }
