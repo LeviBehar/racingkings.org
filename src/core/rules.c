@@ -25,23 +25,27 @@ void validate_move(void) {
 }
 
 void make_move(Board *board, int move) {
-    int src = move & six_bits;
-    int dest = (move >> 6) & six_bits;
+    int from = move & six_bits;
+    int to = (move >> 6) & six_bits;
 
-    Piece moving_piece = board->Grid[src];
-    Bitboard dest_mask = (1ULL << dest);
-    Bitboard src_mask = (1ULL << src);
-    Bitboard move_mask = (1ULL << src) | (1ULL << dest);
+    int stm = board->Side;
+    int opp = !stm;
 
-    if (board->Occupancy[!board->Side] & dest_mask) {
-        Piece captured_piece = board->Grid[dest];
-        board->Pieces[!board->Side][captured_piece] ^= dest_mask;
+    Piece pc = board->Grid[from];
+    Piece cap = board->Grid[to];
+
+    Bitboard move_bb = (1ULL << from) | (1ULL << to);
+    Bitboard to_bb = (1ULL << from);
+
+    if (cap != EMPTY) {
+        board->Pieces[opp][cap] ^= dest_mask;
+        board->Occ[opp] ^= dest_mask;
     }
-    if (!board->Occupancy[ALL_COLORS] & dest_mask) {
-        board->Occupancy[board->Side] ^= src_mask;
-    }
-    board->Occupancy[!board->Side] ^= dest_mask;
-    board->Occupancy[ALL_COLORS] ^= move_mask;
-    board->Grid[dest] = moving_piece;
-    board->Grid[src] = EMPTY;
+    board->Pieces[stm][pc] ^= move_mask;
+
+    board->Occ[stm] ^= move_mask;
+    board->Occ[ALL_COLORS] = (board->Occ[WHITE] | board->Occ[BLACK]);
+
+    board->Grid[to] = pc;
+    board->Grid[from] = EMPTY;
 }

@@ -24,7 +24,7 @@ typedef uint8_t Piece;
 
 typedef struct {
     Bitboard Pieces[ALL_COLORS][5];
-    Bitboard Occupancy[3];
+    Bitboard Occ[3];
 
     Piece Grid[64];
 
