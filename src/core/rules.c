@@ -21,14 +21,14 @@ int game_state(Board *board) {
 
 void validate_move(Board *board, int move) {
     // TODO: Dedive this function to smaller sub-functions each other responsibility
+    unpack_move(int move);
+
+    switch (KnightsAttacks[from] & )
 }
 
 
 void make_move(Board *board, int move) {
     unpack_move(int move);
-
-    int stm = board->Side;
-    int opp = !stm;
 
     Piece pc = board->Grid[from];
     Piece cap = board->Grid[to];
@@ -53,4 +53,9 @@ void make_move(Board *board, int move) {
 void unpack_move(int move) {
     int from = move & six_bits;
     int to = (move >> 6) & six_bits;
+}
+
+void name_sides[Board *board] {
+    int stm = board->Side;
+    int opp = !stm;
 }
