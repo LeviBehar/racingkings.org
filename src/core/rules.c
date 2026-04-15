@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <stdio.h>
-
 #include "types.h"
 #include "attack_tables.h"
 
@@ -20,13 +19,13 @@ int game_state(Board *board) {
     return NONE;
 }
 
-void validate_move(void) {
-    
+void validate_move(Board *board, int move) {
+    // TODO: Dedive this function to smaller sub-functions each other responsibility
 }
 
+
 void make_move(Board *board, int move) {
-    int from = move & six_bits;
-    int to = (move >> 6) & six_bits;
+    unpack_move(int move);
 
     int stm = board->Side;
     int opp = !stm;
@@ -41,6 +40,7 @@ void make_move(Board *board, int move) {
         board->Pieces[opp][cap] ^= dest_mask;
         board->Occ[opp] ^= dest_mask;
     }
+
     board->Pieces[stm][pc] ^= move_mask;
 
     board->Occ[stm] ^= move_mask;
@@ -48,4 +48,9 @@ void make_move(Board *board, int move) {
 
     board->Grid[to] = pc;
     board->Grid[from] = EMPTY;
+}
+
+void unpack_move(int move) {
+    int from = move & six_bits;
+    int to = (move >> 6) & six_bits;
 }
