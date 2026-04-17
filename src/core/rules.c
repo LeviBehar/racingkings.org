@@ -23,12 +23,17 @@ void validate_move(Board *board, int move) {
     // TODO: Dedive this function to smaller sub-functions each other responsibility
     unpack_move(int move);
 
-    switch (KnightsAttacks[from] & )
+    switch (KnightsAttacks[board->Pieces] & )
+}
+
+
+void is_sq_attacked(Board *board, int sq) {
 }
 
 
 void make_move(Board *board, int move) {
     unpack_move(int move);
+    name_sides&occ[Board *board];
 
     Piece pc = board->Grid[from];
     Piece cap = board->Grid[to];
@@ -44,18 +49,22 @@ void make_move(Board *board, int move) {
     board->Pieces[stm][pc] ^= move_mask;
 
     board->Occ[stm] ^= move_mask;
-    board->Occ[ALL_COLORS] = (board->Occ[WHITE] | board->Occ[BLACK]);
+    occ_all = (occ_white | occ_black);
 
     board->Grid[to] = pc;
     board->Grid[from] = EMPTY;
 }
 
 void unpack_move(int move) {
-    int from = move & six_bits;
-    int to = (move >> 6) & six_bits;
+    Square from = move & six_bits;
+    Square to = (move >> 6) & six_bits;
 }
 
-void name_sides[Board *board] {
-    int stm = board->Side;
-    int opp = !stm;
+void name_sides&occ[Board *board] {
+    Bitboard stm = board->Side;
+    Bitboard opp = !stm;
+
+    Bitboard occ_all = board->Occ[ALL_COLORS];
+    Bitboard occ_white = board->Occ[WHITE];
+    Bitboard occ_black = board->Occ[BLACK];
 }

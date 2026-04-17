@@ -10,7 +10,7 @@ enum {
 };
 
 enum States {
-    NONE, DRAW, WHITE_WIN, BLACK_WIN = 3
+    NONE, DRAW, WHITE_WIN, BLACK_WIN, STALEMATE = 4
 };
 
 enum PieceType {

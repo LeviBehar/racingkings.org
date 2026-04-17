@@ -13578,5 +13578,5 @@ Bitboard get_straight_attacks(int sq, Bitboard occ) {
 }
 
 Bitboard get_diagonal_attacks(int sq, Bitboard occ) {
-    return sliding_db[b_offsets[sq] + (((oc & b_masks[sq]) * b_magics[sq]) >> b_shifts[sq])];
+    return sliding_db[b_offsets[sq] + (((occ & b_masks[sq]) * b_magics[sq]) >> b_shifts[sq])];
 }
