@@ -2,9 +2,14 @@
 
 #include <stdio.h>
 #include "types.h"
-#include "attack_tables.h"
+#include "./attacksDB/slidingDB.c"
+#include "./attacksDB/non_slidingDB.c"
 
 #define RANK_8 0xff00000000000000ULL
+#define (OCC_ALL (board->Occ[ALL_COLORS])
+#define (OCC_WHITE board->Occ[WHITE]):
+#define (OCC_BLACK board->Occ[BLACK])
+
 
 int six_bits = 0x3f;
 
@@ -19,11 +24,13 @@ int game_state(Board *board) {
     return NONE;
 }
 
+
 void validate_move(Board *board, int move) {
     // TODO: Dedive this function to smaller sub-functions each other responsibility
-    unpack_move(int move);
+    Square from = move & six_bits;
+    Square to = (move >> 6) & six_bits;
 
-    switch (KnightsAttacks[board->Pieces] & )
+    // switch (KnightAttacks[board->Pieces] & )
 }
 
 
@@ -32,8 +39,10 @@ void is_sq_attacked(Board *board, int sq) {
 
 
 void make_move(Board *board, int move) {
-    unpack_move(int move);
-    name_sides&occ[Board *board];
+    Square from = move & six_bits;
+    Square to = (move >> 6) & six_bits;
+    
+    name_vars[Board *board];
 
     Piece pc = board->Grid[from];
     Piece cap = board->Grid[to];
@@ -55,16 +64,8 @@ void make_move(Board *board, int move) {
     board->Grid[from] = EMPTY;
 }
 
-void unpack_move(int move) {
-    Square from = move & six_bits;
-    Square to = (move >> 6) & six_bits;
-}
 
-void name_sides&occ[Board *board] {
+void name_vars[Board *board] {
     Bitboard stm = board->Side;
     Bitboard opp = !stm;
-
-    Bitboard occ_all = board->Occ[ALL_COLORS];
-    Bitboard occ_white = board->Occ[WHITE];
-    Bitboard occ_black = board->Occ[BLACK];
 }

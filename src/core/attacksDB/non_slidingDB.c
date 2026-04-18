@@ -69,6 +69,7 @@ const Bitboard KnightAttacks[64] = {
     0x0088500000000000ULL, // f8 (61)
     0x0010a00000000000ULL, // g8 (62)
     0x0020400000000000ULL // h8 (63)
+};
 const Bitboard KingAttacks[64] = {
     0x0000000000000302ULL, // a1 (0)
     0x0000000000000705ULL, // b1 (1)
