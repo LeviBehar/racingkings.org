@@ -5,7 +5,7 @@
 
 #include "../types.h"
 
-extern const Bitboard KnightAttacks[64];
-extern const Bitboard KingAttacks[64];
+extern Bitboard KnightAttacks[64];
+extern Bitboard KingAttacks[64];
 
 #endif

@@ -6,7 +6,7 @@
 #include <stdint.h>
 
 enum {
-    WHITE, BLACK, ALL_COLORS = 2
+    WHITE, BLACK = 1
 };
 
 enum States {
@@ -23,8 +23,8 @@ typedef uint8_t Square;
 typedef uint8_t Piece;
 
 typedef struct {
-    Bitboard Pieces[ALL_COLORS][5];
-    Bitboard Occ[3];
+    Bitboard Pieces[2][5];
+    Bitboard Occ[2];
 
     Piece Grid[64];
 

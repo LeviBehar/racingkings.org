@@ -4,7 +4,7 @@
 
 #include "../types.h"
 
-const Bitboard KnightAttacks[64] = {
+Bitboard KnightAttacks[64] = {
     0x0000000000020400ULL, // a1 (0)
     0x0000000000050800ULL, // b1 (1)
     0x00000000000a1100ULL, // c1 (2)
@@ -70,7 +70,7 @@ const Bitboard KnightAttacks[64] = {
     0x0010a00000000000ULL, // g8 (62)
     0x0020400000000000ULL // h8 (63)
 };
-const Bitboard KingAttacks[64] = {
+Bitboard KingAttacks[64] = {
     0x0000000000000302ULL, // a1 (0)
     0x0000000000000705ULL, // b1 (1)
     0x0000000000000e0aULL, // c1 (2)
