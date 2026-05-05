@@ -21,8 +21,11 @@ int game_state(Board *board) {
     return NONE;
 }
 
-
+// function dev in progress
 void validate_move(Board *board, int move) {
+    Bitboard OCC_ALL = (board->Occ[WHITE] | board->Occ[BLACK]);
+    Bitboard OCC_WHITE = (board->Occ[WHITE]);
+    Bitboard OCC_BLACK = (board->Occ[BLACK]);
     // TODO: Dedive this function to smaller sub-functions each other responsibility
     Square from = move & six_bits;
     Square to = (move >> 6) & six_bits;
@@ -30,18 +33,15 @@ void validate_move(Board *board, int move) {
     // switch (KnightAttacks[board->Pieces] & )
 }
 
-
+// function dev in progress
 void is_sq_attacked(Board *board, int sq) {
+
 }
 
 
 void make_move(Board *board, int move) {
     Square from = move & six_bits;
     Square to = (move >> 6) & six_bits;
-
-    Bitboard OCC_ALL = (board->Occ[WHITE] | board->Occ[BLACK]);
-    Bitboard OCC_WHITE = (board->Occ[WHITE]);
-    Bitboard OCC_BLACK = (board->Occ[BLACK]);
 
     Bitboard stm = board->Side;
     Bitboard opp = !stm;
