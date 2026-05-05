@@ -11,7 +11,7 @@ fi
 
 echo "Compiling all files from: $PROJECT_ROOT"
 
-gcc -Wall $SOURCES -o $OUTPUT -lm
+gcc -Wall -g $SOURCES -o $OUTPUT -lm
 
 if [ $? -eq 0 ]; then
     echo "-----------------------"
