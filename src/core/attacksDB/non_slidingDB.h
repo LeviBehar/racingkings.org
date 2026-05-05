@@ -5,7 +5,7 @@
 
 #include "../types.h"
 
-extern Bitboard KnightAttacks[64];
-extern Bitboard KingAttacks[64];
+Bitboard get_knight_attacks(Square sq);
+Bitboard get_king_attacks(Square sq);
 
 #endif
