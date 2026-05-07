@@ -1,26 +1,25 @@
 #!/bin/bash
 
-OUTPUT="/tmp/racingkings.org_build"
-PROJECT_ROOT=$(cd "$(dirname "$0")"/../.. && pwd)
-SOURCES=$(find "$PROJECT_ROOT" -name "*.c")
+CC="gcc"
+OUTPUT="/tmp/racingkings.org_test"
+ROOT=$(cd "$(dirname "$0")"/../.. && pwd)
+SOURCES=$(find "$ROOT" -name "*.c")
+FLAGS="-Wall -g"
 
 if [ -z "$SOURCES" ]; then
-    echo "Error: No .c files found in $PROJECT_ROOT"
+    echo "Error: No .c files found in $ROOT"
     exit 1
 fi
 
-echo "Compiling all files from: $PROJECT_ROOT"
+echo "Compiling all .c files from: $ROOT"
+echo "Flags: $FLAGS"
 
-gcc -Wall -g $SOURCES -o $OUTPUT -lm
+$CC $FLAGS $SOURCES -o $OUTPUT -lm
 
 if [ $? -eq 0 ]; then
-    echo "-----------------------"
-    echo "Build: SUCCESS"
+    echo "Status: SUCCESS"
     echo "Output: $OUTPUT"
-    echo "-----------------------"
 else
-    echo "-----------------------"
-    echo "Build: FAILURE"
-    echo "-----------------------"
+    echo "Status: FAILURE"
     exit 1
 fi
