@@ -44,7 +44,7 @@ void make_move(Board *board, int move) {
     Square to = (move >> 6) & six_bits;
 
     Bitboard stm = board->Side;
-    Bitboard opp = !stm;
+    Bitboard opp = (stm ^ 1);
     
     Piece pc = board->Grid[from];
     Piece cap = board->Grid[to];
