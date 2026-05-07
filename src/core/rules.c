@@ -64,3 +64,9 @@ void make_move(Board *board, int move) {
     board->Grid[to] = pc;
     board->Grid[from] = EMPTY;
 }
+
+
+void switch_side(Board *board) {
+    Color *stm = &board->Side;
+    *stm ^= 1;
+}
