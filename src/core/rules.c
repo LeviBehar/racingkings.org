@@ -67,6 +67,5 @@ void make_move(Board *board, int move) {
 
 
 void switch_side(Board *board) {
-    Color *stm = &board->Side;
-    *stm ^= 1;
+    board->Side ^= 1;
 }
