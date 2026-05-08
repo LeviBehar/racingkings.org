@@ -4,12 +4,29 @@
 #include "types.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "./attacksDB/slidingDB.h"
 #include "./attacksDB/non_slidingDB.h"
 
 #define RANK_8 0xff00000000000000ULL
 
 int six_bits = 0x3F;
+
+// Prints visual bitboard for debugging purposes.
+void pretty(Bitboard b) {
+    printf("+---+---+---+---+---+---+---+---+\n");
+
+    for (int r = 7; r >= 0; --r)
+    {
+        for (int f = 0; f <= 7; ++f)
+        {
+            printf(b & (1ULL << (r * 8 + f)) ? "| X " : "|   ");
+        }
+
+        printf("| %d\n+---+---+---+---+---+---+---+---+\n", 1 + r);
+    }
+    printf("  a   b   c   d   e   f   g   h\n");
+}
 
 
 void pretty(Bitboard bb) {
@@ -40,9 +57,9 @@ int game_state(Board *board) {
 
 // function dev in progress
 void validate_move(Board *board, int move) {
-    Bitboard OCC_ALL = (board->Occ[WHITE] | board->Occ[BLACK]);
-    Bitboard OCC_WHITE = (board->Occ[WHITE]);
-    Bitboard OCC_BLACK = (board->Occ[BLACK]);
+    Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
+    Bitboard occ_white = (board->Occ[WHITE]);
+    Bitboard occ_black = (board->Occ[BLACK]);
     // TODO: Dedive this function to smaller sub-functions each other responsibility
     Square from = move & six_bits;
     Square to = (move >> 6) & six_bits;
@@ -59,6 +76,19 @@ bool is_sq_attacked(Board *board, int sq) {
         case (): return true;
         case (): return true;
     }
+
+bool is_sq_attacked(Board *board, Square sq, Color attack_color) {
+    Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
+
+    Bitboard stm = (attack_color ^ 1);
+    Bitboard opp = attack_color;
+    
+    if (get_king_attacks(sq) & board->Pieces[opp][KING]) return true;
+    if (get_knight_attacks(sq) & board->Pieces[opp][KNIGHT]) return true;
+    if (get_diagonal_attacks(sq, occ_all) & (board->Pieces[opp][BISHOP] | board->Pieces[opp][QUEEN])) return true;
+    if (get_straight_attacks(sq, occ_all) & (board->Pieces[opp][ROOK] | board->Pieces[opp][QUEEN])) return true;
+
+    return false;
 }
 
 
@@ -92,3 +122,28 @@ void make_move(Board *board, int move) {
 void switch_side(Board *board) {
     board->Side ^= 1;
 }
+
+
+// NOTE: main function is for testing purpose only
+int main(void) {
+    Board *board = malloc(sizeof(Board));
+    memset(board, 0, sizeof(Board));
+
+    board->Pieces[WHITE][ROOK]   |= (1ULL << A1);
+    board->Pieces[BLACK][KNIGHT] |= (1ULL << C1);
+
+    board->Occ[WHITE] |= (1ULL << A1);
+    board->Occ[BLACK] |= (1ULL << C1);
+
+    board->Grid[A1] = ROOK;
+    board->Grid[C1] = KNIGHT;
+
+    Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
+
+    board->Side = BLACK;
+
+    Bitboard bb = get_straight_attacks(A1, occ_all);
+
+    pretty(bb);
+}
+
