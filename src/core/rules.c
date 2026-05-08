@@ -2,13 +2,30 @@
 
 #include <stdio.h>
 #include "types.h"
+#include <stdlib.h>
+#include <stdbool.h>
 #include "./attacksDB/slidingDB.h"
 #include "./attacksDB/non_slidingDB.h"
-#include <stdlib.h>
 
 #define RANK_8 0xff00000000000000ULL
 
 int six_bits = 0x3F;
+
+
+void pretty(Bitboard bb) {
+    printf("+---+---+---+---+---+---+---+---+\n");
+
+    for (int r = 7; r >= 0; --r)
+    {
+        for (int f = 0; f <= 7; ++f)
+        {
+            printf(bb & (1ULL << (r * 8 + f)) ? "| X " : "|   ");
+        }
+
+        printf("| %d\n+---+---+---+---+---+---+---+---+\n", 1 + r);
+    }
+    printf("  a   b   c   d   e   f   g   h\n");
+}
 
 
 int game_state(Board *board) {
@@ -29,13 +46,19 @@ void validate_move(Board *board, int move) {
     // TODO: Dedive this function to smaller sub-functions each other responsibility
     Square from = move & six_bits;
     Square to = (move >> 6) & six_bits;
-
-    // switch (KnightAttacks[board->Pieces] & )
 }
 
 // function dev in progress
-void is_sq_attacked(Board *board, int sq) {
-
+bool is_sq_attacked(Board *board, int sq) {
+    Bitboard stm = board->Side;
+    Bitboard opp = (stm ^ 1);
+    
+    switch (sq) {
+        case (): return true;
+        case (): return true;
+        case (): return true;
+        case (): return true;
+    }
 }
 
 
@@ -44,7 +67,7 @@ void make_move(Board *board, int move) {
     Square to = (move >> 6) & six_bits;
 
     Bitboard stm = board->Side;
-    Bitboard opp = !stm;
+    Bitboard opp = (stm ^ 1);
     
     Piece pc = board->Grid[from];
     Piece cap = board->Grid[to];
@@ -63,4 +86,9 @@ void make_move(Board *board, int move) {
 
     board->Grid[to] = pc;
     board->Grid[from] = EMPTY;
+}
+
+
+void switch_side(Board *board) {
+    board->Side ^= 1;
 }
