@@ -29,22 +29,6 @@ void pretty(Bitboard b) {
 }
 
 
-void pretty(Bitboard bb) {
-    printf("+---+---+---+---+---+---+---+---+\n");
-
-    for (int r = 7; r >= 0; --r)
-    {
-        for (int f = 0; f <= 7; ++f)
-        {
-            printf(bb & (1ULL << (r * 8 + f)) ? "| X " : "|   ");
-        }
-
-        printf("| %d\n+---+---+---+---+---+---+---+---+\n", 1 + r);
-    }
-    printf("  a   b   c   d   e   f   g   h\n");
-}
-
-
 int game_state(Board *board) {
     // TODO: Need to check If it's stalemate that also covers reverse stalemate's
     if (board->Pieces[BLACK][KING] & RANK_8) {
@@ -65,17 +49,6 @@ void validate_move(Board *board, int move) {
     Square to = (move >> 6) & six_bits;
 }
 
-// function dev in progress
-bool is_sq_attacked(Board *board, int sq) {
-    Bitboard stm = board->Side;
-    Bitboard opp = (stm ^ 1);
-    
-    switch (sq) {
-        case (): return true;
-        case (): return true;
-        case (): return true;
-        case (): return true;
-    }
 
 bool is_sq_attacked(Board *board, Square sq, Color attack_color) {
     Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
@@ -124,6 +97,7 @@ void switch_side(Board *board) {
 }
 
 
+
 // NOTE: main function is for testing purpose only
 int main(void) {
     Board *board = malloc(sizeof(Board));
@@ -139,6 +113,8 @@ int main(void) {
     board->Grid[C1] = KNIGHT;
 
     Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
+    Bitboard occ_white = (board->Occ[WHITE]);
+    Bitboard occ_black = (board->Occ[BLACK]);
 
     board->Side = BLACK;
 
