@@ -12,7 +12,7 @@
 
 int six_bits = 0x3F;
 
-
+// Prints visual bitboard for debugging purposes.
 void pretty(Bitboard b) {
     printf("+---+---+---+---+---+---+---+---+\n");
 
@@ -41,25 +41,27 @@ int game_state(Board *board) {
 
 // function dev in progress
 void validate_move(Board *board, int move) {
-    Bitboard OCC_ALL = (board->Occ[WHITE] | board->Occ[BLACK]);
-    Bitboard OCC_WHITE = (board->Occ[WHITE]);
-    Bitboard OCC_BLACK = (board->Occ[BLACK]);
+    Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
+    Bitboard occ_white = (board->Occ[WHITE]);
+    Bitboard occ_black = (board->Occ[BLACK]);
     // TODO: Dedive this function to smaller sub-functions each other responsibility
     Square from = move & six_bits;
     Square to = (move >> 6) & six_bits;
 }
 
-// function dev in progress
-bool is_sq_attacked(Board *board, int sq) {
-    Bitboard stm = board->Side;
-    Bitboard opp = (stm ^ 1);
+
+bool is_sq_attacked(Board *board, Square sq, Color attack_color) {
+    Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
+
+    Bitboard stm = (attack_color ^ 1);
+    Bitboard opp = attack_color;
     
-//    switch (sq) {
-//        case (): return true;
-//        case (): return true;
-//        case (): return true;
-//        case (): return true;
-//    }
+    if (get_king_attacks(sq) & board->Pieces[opp][KING]) return true;
+    if (get_knight_attacks(sq) & board->Pieces[opp][KNIGHT]) return true;
+    if (get_diagnle_attacks(sq, occ_all) & (board->Pieces[opp][BISHOP] | board->Pieces[opp][QUEEN])) return true;
+    if (get_straight_attacks(sq, occ_all) & (board->Pieces[opp][ROOK] | board->Pieces[opp][QUEEN])) return true;
+
+    return false;
 }
 
 
@@ -110,9 +112,13 @@ int main(void) {
     board->Grid[A1] = ROOK;
     board->Grid[C1] = KNIGHT;
 
+    Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
+    Bitboard occ_white = (board->Occ[WHITE]);
+    Bitboard occ_black = (board->Occ[BLACK]);
+
     board->Side = BLACK;
 
-    Bitboard bb = get_straight_attacks(A1, (board->Occ[WHITE] | board->Occ[BLACK]));
+    Bitboard bb = get_straight_attacks(A1, occ_all);
 
     pretty(bb);
 }
