@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CC="gcc"
-ROOT=$(cd "$(dirname "$0")"/../.. && pwd)
+ROOT=$(cd "$(dirname "$0")"/.. && pwd)
 SOURCES=$(find "$ROOT" -name "*.c")
 FLAGS="-Wall -g -fsyntax-only -c"
 
