@@ -4,6 +4,7 @@
 #include "types.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "./attacksDB/slidingDB.h"
 #include "./attacksDB/non_slidingDB.h"
 
@@ -12,7 +13,7 @@
 int six_bits = 0x3F;
 
 
-void pretty(uint64_t b) {
+void pretty(Bitboard b) {
     printf("+---+---+---+---+---+---+---+---+\n");
 
     for (int r = 7; r >= 0; --r)
@@ -53,12 +54,12 @@ bool is_sq_attacked(Board *board, int sq) {
     Bitboard stm = board->Side;
     Bitboard opp = (stm ^ 1);
     
-    switch (sq) {
-        case (): return true;
-        case (): return true;
-        case (): return true;
-        case (): return true;
-    }
+//    switch (sq) {
+//        case (): return true;
+//        case (): return true;
+//        case (): return true;
+//        case (): return true;
+//    }
 }
 
 
@@ -92,3 +93,27 @@ void make_move(Board *board, int move) {
 void switch_side(Board *board) {
     board->Side ^= 1;
 }
+
+
+
+// NOTE: main function is for testing purpose only
+int main(void) {
+    Board *board = malloc(sizeof(Board));
+    memset(board, 0, sizeof(Board));
+
+    board->Pieces[WHITE][ROOK]   |= (1ULL << A1);
+    board->Pieces[BLACK][KNIGHT] |= (1ULL << C1);
+
+    board->Occ[WHITE] |= (1ULL << A1);
+    board->Occ[BLACK] |= (1ULL << C1);
+
+    board->Grid[A1] = ROOK;
+    board->Grid[C1] = KNIGHT;
+
+    board->Side = BLACK;
+
+    Bitboard bb = get_straight_attacks(A1, (board->Occ[WHITE] | board->Occ[BLACK]));
+
+    pretty(bb);
+}
+
