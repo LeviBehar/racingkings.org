@@ -58,7 +58,7 @@ bool is_sq_attacked(Board *board, Square sq, Color attack_color) {
     
     if (get_king_attacks(sq) & board->Pieces[opp][KING]) return true;
     if (get_knight_attacks(sq) & board->Pieces[opp][KNIGHT]) return true;
-    if (get_diagnle_attacks(sq, occ_all) & (board->Pieces[opp][BISHOP] | board->Pieces[opp][QUEEN])) return true;
+    if (get_diagonal_attacks(sq, occ_all) & (board->Pieces[opp][BISHOP] | board->Pieces[opp][QUEEN])) return true;
     if (get_straight_attacks(sq, occ_all) & (board->Pieces[opp][ROOK] | board->Pieces[opp][QUEEN])) return true;
 
     return false;
