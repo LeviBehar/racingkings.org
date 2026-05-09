@@ -3,7 +3,7 @@
 CC="gcc"
 ROOT=$(cd "$(dirname "$0")"/.. && pwd)
 SOURCES=$(find "$ROOT" -name "*.c")
-FLAGS="-Wall -g -fsyntax-only -c"
+FLAGS="-Wall -Wextra -g -fsyntax-only -c"
 
 if [ -z "$SOURCES" ]; then
     echo "Error: No .c files found in $ROOT"

@@ -12,7 +12,7 @@
 #define SET_BB(sq) (1ULL << (sq))
 
 int six_bits = 0x3F;
-int three_bits = 0x9;
+int three_bits = 0x7;
 
 
 // Prints visual bitboard for debugging purposes.
