@@ -110,16 +110,15 @@ void make_move(Board *board, int move) {
     Piece pc_type = board->Grid[from];
     Piece cap = board->Grid[to];
 
-    Bitboard move_bb = (1ULL << from) | (1ULL << to);
-    Bitboard to_bb = (1ULL << to);
+    Bitboard move_bb = SET_BB(from) | SET_BB(to);
+    Bitboard to_bb = SET_BB(to);
 
     if (cap != EMPTY) {
-        board->Pieces[opp][cap] ^= to_bb;
-        board->Occ[opp] ^= to_bb;
+        board->Pieces[opp][cap] &= ~to_bb;
+        board->Occ[opp] &= ~to_bb;
     }
 
     board->Pieces[stm][pc_type] ^= move_bb;
-
     board->Occ[stm] ^= move_bb;
 
     board->Grid[to] = pc_type;
@@ -159,11 +158,11 @@ int main(void) {
     Board *board = malloc(sizeof(Board));
     memset(board, 0, sizeof(Board));
 
-    board->Pieces[WHITE][ROOK]   |= (1ULL << A1);
-    board->Pieces[BLACK][KNIGHT] |= (1ULL << C1);
+    board->Pieces[WHITE][ROOK] |= SET_BB(A1);
+    board->Pieces[BLACK][KNIGHT] |= SET_BB(C1);
 
-    board->Occ[WHITE] |= (1ULL << A1);
-    board->Occ[BLACK] |= (1ULL << C1);
+    board->Occ[WHITE] |= SET_BB(A1);
+    board->Occ[BLACK] |= SET_BB(C1);
 
     board->Grid[A1] = ROOK;
     board->Grid[C1] = KNIGHT;
