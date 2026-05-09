@@ -58,7 +58,7 @@ bool validate_move(Board *board, int move) {
     Square to = (move >> 6) & six_bits;
     Piece pc = (move >> 12) & three_bits;
 
-    Bitboard stm = board->Side;
+    Color stm = board->Side;
 
     if (!(board->Occ[stm] & SET_BB(from))) return false;
 
@@ -107,7 +107,7 @@ void make_move(Board *board, int move) {
     Bitboard stm = board->Side;
     Bitboard opp = (stm ^ 1);
     
-    Piece pc = board->Grid[from];
+    Piece pc_type = board->Grid[from];
     Piece cap = board->Grid[to];
 
     Bitboard move_bb = (1ULL << from) | (1ULL << to);
@@ -118,12 +118,16 @@ void make_move(Board *board, int move) {
         board->Occ[opp] ^= to_bb;
     }
 
-    board->Pieces[stm][pc] ^= move_bb;
+    board->Pieces[stm][pc_type] ^= move_bb;
 
     board->Occ[stm] ^= move_bb;
 
-    board->Grid[to] = pc;
+    board->Grid[to] = pc_type;
     board->Grid[from] = EMPTY;
+
+    if ((pc_type == KING && stm == WHITE) && (to_bb & RANK_8)) {
+        board->WhiteR8 = 1;
+    }
 }
 
 
