@@ -13573,10 +13573,10 @@ static const int b_shifts[] = {
     0x3b, 0x3b, 0x3b, 0x3a, 
 };
 
-Bitboard get_straight_attacks(int sq, Bitboard occ) {
+Bitboard get_straight_attacks(Square sq, Bitboard occ) {
     return sliding_db[r_offsets[sq] + (((occ & r_masks[sq]) * r_magics[sq]) >> r_shifts[sq])];
 }
 
-Bitboard get_diagonal_attacks(int sq, Bitboard occ) {
+Bitboard get_diagonal_attacks(Square sq, Bitboard occ) {
     return sliding_db[b_offsets[sq] + (((occ & b_masks[sq]) * b_magics[sq]) >> b_shifts[sq])];
 }
