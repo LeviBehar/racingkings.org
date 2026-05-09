@@ -5,7 +5,7 @@
 
 #include "../types.h"
 
-Bitboard get_straight_attacks(int sq, Bitboard occ);
-Bitboard get_diagonal_attacks(int sq, Bitboard occ);
+Bitboard get_straight_attacks(Square sq, Bitboard occ);
+Bitboard get_diagonal_attacks(Square sq, Bitboard occ);
 
 #endif
