@@ -14,6 +14,15 @@
 int six_bits = 0x3F;
 int three_bits = 0x7;
 
+void pretty(Bitboard b);
+int game_state(Board *board);
+bool validate_move(Board *board, int move);
+bool move_exposes_king(const Board *board, int move);
+bool is_sq_attacked(Board *board, Square sq, Color attack_color);
+void make_move(Board *board, int move);
+void switch_side(Board *board);
+Bitboard get_attacks(Square sq, Piece pc, Bitboard occ_all);
+
 
 // Prints visual bitboard for debugging purposes.
 void pretty(Bitboard b) {
@@ -42,28 +51,44 @@ int game_state(Board *board) {
     return NONE;
 }
 
-// function dev in progress
+// return's `true` if move is legal
 bool validate_move(Board *board, int move) {
     Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
-    // TODO: Dedive this function to smaller sub-functions each other responsibility
     Square from = move & six_bits;
     Square to = (move >> 6) & six_bits;
     Piece pc = (move >> 12) & three_bits;
 
     Bitboard stm = board->Side;
-    Bitboard opp = (stm ^ 1);
-    
+
     if (!(board->Occ[stm] & SET_BB(from))) return false;
 
     if (!(get_attacks(from, pc, occ_all) & SET_BB(to)) || (SET_BB(to) & board->Occ[stm])) return false;
 
+    if (move_exposes_king(board, move) == true) return false;
+
+    return true;
+}
+
+
+// return's `true` if move exposes king
+bool move_exposes_king(const Board *board, int move) {
+    Board tmp;
+    tmp = *board;
+
+    make_move(&tmp, move);
+
+    Square wk_sq = __builtin_ctzll(tmp.Pieces[WHITE][KING]);
+    Square bk_sq = __builtin_ctzll(tmp.Pieces[BLACK][KING]);
+
+    if ((is_sq_attacked(&tmp, wk_sq, BLACK) || is_sq_attacked(&tmp, bk_sq, WHITE)) == true) return true;
+
+    return false;
 }
 
 
 bool is_sq_attacked(Board *board, Square sq, Color attack_color) {
     Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
 
-    Bitboard stm = (attack_color ^ 1);
     Bitboard opp = attack_color;
     
     if (get_king_attacks(sq) & board->Pieces[opp][KING]) return true;
@@ -140,8 +165,8 @@ int main(void) {
     board->Grid[C1] = KNIGHT;
 
     Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
-    Bitboard occ_white = (board->Occ[WHITE]);
-    Bitboard occ_black = (board->Occ[BLACK]);
+    // Bitboard occ_white = (board->Occ[WHITE]);
+    // Bitboard occ_black = (board->Occ[BLACK]);
 
     board->Side = BLACK;
 
