@@ -154,27 +154,36 @@ Bitboard get_attacks(Square sq, Piece pc, Bitboard occ_all) {
 }
 
 
-// NOTE: main function is for testing purpose only
-int main(void) {
-    Board *board = malloc(sizeof(Board));
-    memset(board, 0, sizeof(Board));
+int main() {
+    Board real_board;
+    Move real_move;
 
-    board->Pieces[WHITE][ROOK] |= SET_BB(A1);
-    board->Pieces[BLACK][KNIGHT] |= SET_BB(C1);
+    Board *board = &real_board;
+    Move *move = &real_move;
 
-    board->Occ[WHITE] |= SET_BB(A1);
-    board->Occ[BLACK] |= SET_BB(C1);
+    memset(&real_board, 0, sizeof(Board));
+    memset(&real_move, 0, sizeof(Move));
 
-    board->Grid[A1] = ROOK;
-    board->Grid[C1] = KNIGHT;
+    move->From = B1;
+    move->To = C3;
+    move->Pc = KNIGHT;
 
-    Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
-    // Bitboard occ_white = (board->Occ[WHITE]);
-    // Bitboard occ_black = (board->Occ[BLACK]);
+    board->Grid[B1] = KNIGHT;
+    board->Grid[A1] = KING;
+    board->Grid[H1] = KING;
 
-    board->Side = BLACK;
+    board->Occ[WHITE] = 0x3ULL;
+    board->Occ[BLACK] = 0x80ULL;
 
-    Bitboard bb = get_straight_attacks(A1, occ_all);
+    board->Pieces[WHITE][KNIGHT] = 0x2ULL;
+    board->Pieces[WHITE][KING] = 0x1ULL;
+    board->Pieces[BLACK][KING] = 0x80ULL;
 
-    pretty(bb);
+    board->Side = WHITE;
+    board->WhiteR8 = 0;
+
+    bool status = validate_move(board, *move);
+    printf("Move valid: %s\n", status ? "true" : "false");
+
+    return 0;
 }
