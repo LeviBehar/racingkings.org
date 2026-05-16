@@ -35,6 +35,13 @@ typedef uint8_t Square;
 typedef uint8_t Piece;
 
 typedef struct {
+    Square From;
+    Square To;
+
+    Piece Pc;
+} Move;
+
+typedef struct {
     Bitboard Pieces[2][6];
     Bitboard Occ[2];
 

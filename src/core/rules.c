@@ -16,10 +16,10 @@ int three_bits = 0x7;
 
 void pretty(Bitboard b);
 int game_state(Board *board);
-bool validate_move(Board *board, int move);
-bool move_exposes_king(const Board *board, int move);
+bool validate_move(const Board *board, Move move);
+bool move_exposes_king(const Board *board, Move move);
 bool is_sq_attacked(Board *board, Square sq, Color attack_color);
-void make_move(Board *board, int move);
+void make_move(Board *board, Move move);
 void switch_side(Board *board);
 Bitboard get_attacks(Square sq, Piece pc, Bitboard occ_all);
 
@@ -51,12 +51,13 @@ int game_state(Board *board) {
     return NONE;
 }
 
+
 // return's `true` if move is legal
-bool validate_move(Board *board, int move) {
+bool validate_move(const Board *board, Move move) {
     Bitboard occ_all = (board->Occ[WHITE] | board->Occ[BLACK]);
-    Square from = move & six_bits;
-    Square to = (move >> 6) & six_bits;
-    Piece pc = (move >> 12) & three_bits;
+    Square from = move.From;
+    Square to = move.To;
+    Piece pc = move.Pc;
 
     Color stm = board->Side;
 
@@ -71,7 +72,7 @@ bool validate_move(Board *board, int move) {
 
 
 // return's `true` if move exposes king
-bool move_exposes_king(const Board *board, int move) {
+bool move_exposes_king(const Board *board, Move move) {
     Board tmp;
     tmp = *board;
 
@@ -100,9 +101,9 @@ bool is_sq_attacked(Board *board, Square sq, Color attack_color) {
 }
 
 
-void make_move(Board *board, int move) {
-    Square from = move & six_bits;
-    Square to = (move >> 6) & six_bits;
+void make_move(Board *board, Move move) {
+    Square from = move.From;
+    Square to = move.To;
 
     Bitboard stm = board->Side;
     Bitboard opp = (stm ^ 1);
